@@ -22,6 +22,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import zaragoza.mateo.cartelera.ui.theme.CarteleraTheme
 import java.security.Key
 
@@ -49,8 +51,11 @@ fun LoginScreen(onLoginOk: () -> Unit){
         OutlinedTextField(
             value = usuario,
             onValueChange = {usuario = it},
-            label = {Text("usuario")},
+            label = {Text("correo")},
             singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Email
+            ),
             modifier = Modifier.fillMaxWidth(),
             isError = hayError
         )
@@ -69,15 +74,25 @@ fun LoginScreen(onLoginOk: () -> Unit){
 
         if (hayError){
             Text(
-                text = "Usuario o contraseña incorrectos",
+                text = "correo o contraseña incorrectos",
                 color = MaterialTheme.colorScheme.error
             )
         }
 
         Button(
             onClick = {
-                if (usuario.trim() == "admin" && contrasenia == "admin"){ onLoginOk()}
-                else {hayError = true}
+                if (usuario.isBlank() || contrasenia.isBlank()){
+                    hayError = true
+                } else{
+                    Firebase.auth.signInWithEmailAndPassword(usuario.trim(), contrasenia)
+                        .addOnCompleteListener { tarea ->
+                            if (tarea.isSuccessful) {
+                                onLoginOk()
+                            } else{
+                                hayError = true
+                            }
+                        }
+                }
             },
             modifier = Modifier.fillMaxWidth()
         ){
