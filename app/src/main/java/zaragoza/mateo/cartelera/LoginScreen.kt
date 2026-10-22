@@ -10,6 +10,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,7 +29,9 @@ import zaragoza.mateo.cartelera.ui.theme.CarteleraTheme
 import java.security.Key
 
 @Composable
-fun LoginScreen(onLoginOk: () -> Unit){
+fun LoginScreen(
+    onLoginOk: () -> Unit,
+    onRegistrarse: () -> Unit){
     var usuario by rememberSaveable { mutableStateOf("") }
     var contrasenia by rememberSaveable { mutableStateOf("") }
     var hayError by rememberSaveable { mutableStateOf(false) }
@@ -98,12 +101,15 @@ fun LoginScreen(onLoginOk: () -> Unit){
         ){
             Text("Ingresar")
         }
+        TextButton(onClick = onRegistrarse) {
+            Text("¿No tienes una cuenta? Registrate")
+        }
     }
 }
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview(){
     CarteleraTheme() {
-        LoginScreen(onLoginOk = {})
+        LoginScreen(onLoginOk = {}, onRegistrarse = {})
     }
 }

@@ -18,6 +18,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,26 +31,37 @@ import zaragoza.mateo.cartelera.ui.theme.CarteleraTheme
 
 
 @Composable
-fun PeliculasScreen(onPeliculaClick: (Int) -> Unit) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-        ){
-        Text(
-            text = "Películas",
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(16.dp)
-        )
+fun PeliculasScreen(
+    usuario: String,
+    onPeliculaClick: (Int) -> Unit,
+    onCerrarSesion: () -> Unit) {
+    Column() {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
 
+        ) {
+            Column() {
+                Text(
+                    text = "Películas",
+                    style = MaterialTheme.typography.headlineMedium,
+                )
+                Text(text = usuario, style = MaterialTheme.typography.bodySmall)
+            }
+            TextButton(onClick = onCerrarSesion) { Text("Cerrar sesión") }
+        }
         LazyColumn(
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(peliculas) { pelicula ->
-                PeliculaItem(pelicula = pelicula, onClick = {onPeliculaClick(pelicula.id)})
+                PeliculaItem(pelicula = pelicula, onClick = { onPeliculaClick(pelicula.id) })
             }
         }
     }
+
+
 }
 @Composable
 fun PeliculaItem(pelicula: Pelicula, onClick: () -> Unit) {
@@ -87,6 +99,9 @@ fun PeliculaItem(pelicula: Pelicula, onClick: () -> Unit) {
 @Composable
 fun PeliculasScreenPreview(){
     CarteleraTheme() {
-        PeliculasScreen(onPeliculaClick = {})
+        PeliculasScreen(
+            usuario = "ana@correo.com",
+            onPeliculaClick = {},
+            onCerrarSesion = {})
     }
 }
