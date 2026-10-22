@@ -20,7 +20,7 @@ fun AppNavigation(modifier: Modifier = Modifier){
     }
     NavHost(
         navController = navController,
-        startDestination = "inicio",
+        startDestination = inicio,
         modifier = modifier
     ){
         composable("login"){
